@@ -28,7 +28,7 @@
             "env": {
                 // If you set this variable, check the VSCode console log window for the location of the log file.
                 "RUST_LOG": "info",
-                "DEFMT_LOG": "info",
+                "DEFMT_LOG": "trace",
             },
             // Info, Debug
             "consoleLogLevel": "Console"

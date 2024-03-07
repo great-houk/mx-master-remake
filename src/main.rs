@@ -21,17 +21,26 @@ use embassy_nrf::{
 use embassy_usb::class::cdc_acm::{CdcAcmClass, State};
 use embassy_usb::driver::EndpointError;
 use embassy_usb::{Builder, Config};
-use nrf_softdevice::{raw, Softdevice};
+use nrf_softdevice::{raw, SocEvent, Softdevice};
 use {defmt_rtt as _, panic_probe as _};
 
 bind_interrupts!(struct Irqs {
     USBD => usb::InterruptHandler<peripherals::USBD>;
-    POWER_CLOCK => usb::vbus_detect::InterruptHandler;
 });
 
 #[embassy_executor::task]
 async fn softdevice_task(sd: &'static Softdevice) -> ! {
-    sd.run().await
+    sd.run_with_callback(soc_event).await
+}
+
+fn soc_event(event: SocEvent) {
+    use SocEvent::{PowerUsbDetected, PowerUsbPowerReady, PowerUsbRemoved};
+    match event {
+        PowerUsbDetected | PowerUsbRemoved | PowerUsbPowerReady => unsafe {
+            usb::vbus_detect::InterruptHandler::on_interrupt(event)
+        },
+        _ => (),
+    }
 }
 
 #[embassy_executor::main]
@@ -83,7 +92,7 @@ async fn main(spawner: Spawner) {
     // Create the driver, from the HAL.
     interrupt::USBD.set_priority(Priority::P2);
     interrupt::POWER_CLOCK.set_priority(Priority::P2);
-    let driver = Driver::new(p.USBD, Irqs, HardwareVbusDetect::new(Irqs));
+    let driver = Driver::new(p.USBD, Irqs, HardwareVbusDetect::new());
 
     // Create embassy-usb Config
     let mut config = Config::new(0xc0de, 0xcafe);

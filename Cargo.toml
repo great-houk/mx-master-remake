@@ -17,7 +17,7 @@ embassy-time = { version = "0.3.0", features = [
   "defmt-timestamp-uptime",
 ] }
 embassy-sync = { version = "0.5.0" }
-embassy-nrf = { version = "0.1.0", features = [
+embassy-nrf = { path = "./embassy-nrf", features = [
   "defmt",
   "gpiote",
   "time-driver-rtc1",
@@ -48,6 +48,6 @@ fixed = "1.24.0"
 heapless = "0.8.0"
 atomic-pool = "1.0.1"
 static_cell = "2.0.0"
-embassy-boot-nrf = { version = "0.2.0", features = ["softdevice", "defmt"] }
+# embassy-boot-nrf = { version = "0.2.0", features = ["softdevice", "defmt"] }
 embassy-futures = { version = "0.1.1", features = ["defmt"] }
 embassy-usb = { version = "0.1.0", features = ["defmt"] }
