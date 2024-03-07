@@ -1,0 +1,69 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "preLaunchTask": "cargo build (debug)",
+            "type": "probe-rs-debug",
+            "request": "launch",
+            "name": "Run (Debug)",
+            "cwd": "${workspaceFolder}",
+            "speed": 2400,
+            "runtimeExecutable": "probe-rs",
+            "runtimeArgs": [
+                "dap-server"
+            ],
+            "chip": "nRF52840_xxAA",
+            "flashingConfig": {
+                "flashingEnabled": true,
+                "haltAfterReset": false,
+            },
+            "coreConfigs": [
+                {
+                    "coreIndex": 0,
+                    "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/mx-master-remake",
+                    "svdFile": "${workspaceFolder}/nrf52840.svd",
+                    "rttEnabled": true,
+                }
+            ],
+            "env": {
+                // If you set this variable, check the VSCode console log window for the location of the log file.
+                "RUST_LOG": "info",
+                "DEFMT_LOG": "info",
+            },
+            // Info, Debug
+            "consoleLogLevel": "Console"
+        },
+        {
+            "preLaunchTask": "cargo build (release)",
+            "type": "probe-rs-debug",
+            "request": "launch",
+            "name": "Run (Release)",
+            "cwd": "${workspaceFolder}",
+            "speed": 2400,
+            "runtimeExecutable": "probe-rs",
+            "runtimeArgs": [
+                "dap-server"
+            ],
+            "chip": "nRF52840_xxAA",
+            "flashingConfig": {
+                "flashingEnabled": true,
+                "haltAfterReset": false,
+            },
+            "coreConfigs": [
+                {
+                    "coreIndex": 0,
+                    "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/release/mx-master-remake",
+                    "svdFile": "${workspaceFolder}/nrf52840.svd",
+                    "rttEnabled": true,
+                }
+            ],
+            "env": {
+                // If you set this variable, check the VSCode console log window for the location of the log file.
+                "RUST_LOG": "info",
+                "DEFMT_LOG": "info",
+            },
+            // Info, Debug
+            "consoleLogLevel": "Console"
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+rustflags = [
+    # --- KEEP existing `link-arg` flags ---
+    "-C",
+    "link-arg=-Tlink.x",
+    "-C",
+    "link-arg=--nmagic",
+
+    # --- ADD following new flag ---
+    "-C",
+    "link-arg=-Tdefmt.x",
+]
+runner = "probe-rs run --chip nRF52840_xxAA"
+
+[build]
+target = "thumbv7em-none-eabihf"
+
+[env]
+DEFMT_LOG = "info"
